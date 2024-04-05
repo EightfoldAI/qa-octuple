@@ -1,0 +1,33 @@
+.blogImage {
+  height: 200px;
+  width: 100%;
+}
+
+.blogImageDescription {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blogImageTitle {
+  color: var(--primary-color);
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uploadModal {
+  --background-color: var(--primary-background3-color);
+  text-align: center;
+}
+
+.uploadModalDropzone {
+  --background-color: #ffffff;
+}

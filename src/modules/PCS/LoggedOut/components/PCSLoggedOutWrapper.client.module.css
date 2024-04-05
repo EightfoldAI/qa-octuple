@@ -1,0 +1,94 @@
+.blogImage {
+  height: 200px;
+  width: 100%;
+}
+
+.blogImageDescription {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blogImageTitle {
+  color: var(--primary-color);
+  text-align: center;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.expandedContent {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.expandedContent.expanded {
+  animation-name: advancedShow;
+  animation-delay: 300ms;
+  animation-duration: 200ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  position: relative;
+}
+
+.firstRunModal {
+  text-align: center;
+}
+
+.departmentList,
+.skillList {
+  flex-wrap: wrap;
+}
+
+.jobListDesktop {
+  padding: 8px 0;
+  padding-inline-end: 16px;
+}
+
+.jobListMobile {
+  padding: 8px 0;
+}
+
+.search {
+  width: 100%;
+}
+
+.sectionMarginBottom {
+  margin-bottom: 80px;
+}
+
+.sectionPadding {
+  padding: 24px;
+}
+
+.uploadButton {
+  white-space: normal;
+  min-width: 100%;
+  height: auto;
+}
+
+.uploadModal {
+  --background-color: var(--primary-background3-color);
+  text-align: center;
+}
+
+.uploadModalDropzone {
+  --background-color: #ffffff;
+}
+
+@keyframes advancedShow {
+  0% {
+    opacity: 0;
+    pointer-events: none;
+  }
+  100% {
+    opacity: 1;
+    pointer-events: all;
+  }
+}

@@ -1,0 +1,84 @@
+# Project dependencies
+
+## @eightfold.ai/octuple
+<p align="center">     <img width="200" src="https://raw.githubusercontent.com/EightfoldAI/octuple/main/public/assets/Octuple-Logo.svg"> </p>
+
+[npm](http://npmjs.org/@eightfold.ai/octuple) - [Homepage](https://github.com/EightfoldAI/octuple#readme) - [Repository](https://github.com/EightfoldAI/octuple) - [Issues](https://github.com/EightfoldAI/octuple/issues) - Licence: MIT
+
+Install with npm: `npm install @eightfold.ai/octuple`<br/>
+Install with yarn: `yarn add @eightfold.ai/octuple`
+
+---
+## @react-spring/web
+`react-dom` support
+
+[npm](http://npmjs.org/@react-spring/web) - [Homepage](https://github.com/pmndrs/react-spring#readme) - [Repository](https://github.com/pmndrs/react-spring) - [Issues](https://github.com/pmndrs/react-spring/issues) - Licence: MIT
+
+Install with npm: `npm install @react-spring/web`<br/>
+Install with yarn: `yarn add @react-spring/web`
+
+---
+## dayjs
+2KB immutable date time library alternative to Moment.js with the same modern API 
+
+[npm](http://npmjs.org/dayjs) - [Homepage](https://day.js.org) - [Repository](https://github.com/iamkun/dayjs) - [Issues](https://github.com/iamkun/dayjs/issues) - Licence: MIT
+
+Install with npm: `npm install dayjs`<br/>
+Install with yarn: `yarn add dayjs`
+
+---
+## mongodb
+The official MongoDB driver for Node.js
+
+[npm](http://npmjs.org/mongodb) - [Homepage](https://github.com/mongodb/node-mongodb-native) - [Repository](https://github.com/mongodb/node-mongodb-native) - [Issues](https://jira.mongodb.org/projects/NODE/issues/) - Licence: Apache-2.0
+
+Install with npm: `npm install mongodb`<br/>
+Install with yarn: `yarn add mongodb`
+
+---
+## next
+The React Framework
+
+[npm](http://npmjs.org/next) - [Homepage](https://nextjs.org) - [Repository](https://github.com/vercel/next.js) - [Issues](https://github.com/vercel/next.js/issues) - Licence: MIT
+
+Install with npm: `npm install next`<br/>
+Install with yarn: `yarn add next`
+
+---
+## react
+React is a JavaScript library for building user interfaces.
+
+[npm](http://npmjs.org/react) - [Homepage](https://reactjs.org/) - [Repository](https://github.com/facebook/react) - [Issues](https://github.com/facebook/react/issues) - Licence: MIT
+
+Install with npm: `npm install react`<br/>
+Install with yarn: `yarn add react`
+
+---
+## react-dom
+React package for working with the DOM.
+
+[npm](http://npmjs.org/react-dom) - [Homepage](https://reactjs.org/) - [Repository](https://github.com/facebook/react) - [Issues](https://github.com/facebook/react/issues) - Licence: MIT
+
+Install with npm: `npm install react-dom`<br/>
+Install with yarn: `yarn add react-dom`
+
+---
+## react-flip-toolkit
+Configurable FLIP animation helpers for React
+
+[npm](http://npmjs.org/react-flip-toolkit) - [Homepage](https://github.com/aholachek/react-flip-toolkit#readme) - [Repository](https://github.com/aholachek/react-flip-toolkit) - [Issues](https://github.com/aholachek/react-flip-toolkit/issues) - Licence: MIT
+
+Install with npm: `npm install react-flip-toolkit`<br/>
+Install with yarn: `yarn add react-flip-toolkit`
+
+---
+## react-use-measure
+measure view bounds
+
+[npm](http://npmjs.org/react-use-measure) - Licence: MIT
+
+Install with npm: `npm install react-use-measure`<br/>
+Install with yarn: `yarn add react-use-measure`
+
+---
+Documentation created with [depdoc](https://github.com/mrmartineau/depdoc/)
