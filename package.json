@@ -23,7 +23,7 @@
     "lint:fix": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --fix"
   },
   "dependencies": {
-    "@eightfold.ai/octuple": "2.49.3",
+    "@eightfold.ai/octuple": "2.49.4",
     "@react-spring/web": "9.6.1",
     "dayjs": "1.11.3",
     "mongodb": "^6.4.0",

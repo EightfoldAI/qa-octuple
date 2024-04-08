@@ -1055,10 +1055,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@eightfold.ai/octuple@2.49.3":
-  version "2.49.3"
-  resolved "https://registry.yarnpkg.com/@eightfold.ai/octuple/-/octuple-2.49.3.tgz#f1a21cb20a498e7ce05d59b6d51522230afe675b"
-  integrity sha512-c+/W1um3z0cRTiUTxtuH+1tvI2p5VM0I/bYu+sBuDLj/ShdYzraBEDOOsPck+dT8dAXYSjzPEskUlOrL0c5fUw==
+"@eightfold.ai/octuple@2.49.4":
+  version "2.49.4"
+  resolved "https://registry.yarnpkg.com/@eightfold.ai/octuple/-/octuple-2.49.4.tgz#af072a6c99038c9652f5d9bd3bcb4404461b443e"
+  integrity sha512-jcuVIY0CjEznzokmXH5ejgIb0FwXqTTejiVG3ygEIfrXYow+hv3imba0xiRGByo02/3t4wK8QKBt5hurlDX+cg==
   dependencies:
     "@floating-ui/react" "0.20.1"
     "@mdi/react" "1.6.1"
