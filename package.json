@@ -23,7 +23,7 @@
     "lint:fix": "tsc --noEmit && eslint src --ignore-pattern 'src/public' --fix"
   },
   "dependencies": {
-    "@eightfold.ai/octuple": "2.49.4",
+    "@eightfold.ai/octuple": "2.50.0",
     "@react-spring/web": "9.6.1",
     "dayjs": "1.11.3",
     "mongodb": "^6.4.0",
@@ -43,9 +43,12 @@
     "autoprefixer": "^10.4.16",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-prettier": "4.0.0",
     "husky": "^9.0.11",
     "postcss": "^8.4.31",
     "postcss-import": "^16.0.1",
+    "prettier": "2.5.1",
     "tailwind-merge": "^2.0.0",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.3.3",

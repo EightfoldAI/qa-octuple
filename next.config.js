@@ -2,6 +2,7 @@
 /** @see https://nextjs.org/docs/api-reference/next.config.js/introduction */
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   headers: require('./headers.config'),
   webpack: require('./webpack.config'),
   reactStrictMode: true,

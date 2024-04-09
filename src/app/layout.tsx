@@ -1,7 +1,8 @@
 import '@/styles/bundle.css';
 
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, Suspense } from 'react';
 import App from './app';
+import Loading from './loading';
 import { SITE_NAME } from '@/configs/env';
 import { withMetadata } from '@/packages/utils/metadata';
 
@@ -20,7 +21,9 @@ const RootLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <html lang="en">
       <body className="root">
-        <App children={children} />
+        <Suspense fallback={<Loading />}>
+          <App children={children} />
+        </Suspense>
       </body>
     </html>
   );

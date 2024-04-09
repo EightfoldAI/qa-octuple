@@ -61,7 +61,7 @@ export const locations = {
 };
 
 export interface AppProps {
-  searchParams: NextPageProps['searchParams'];
+  searchParams?: NextPageProps['searchParams'];
 }
 
 export interface LaunchPadNavItem {

@@ -1,3 +1,5 @@
+'use client';
+
 import type { Locale } from '@eightfold.ai/octuple/lib/locale';
 import {
   arSA,
@@ -43,9 +45,15 @@ import {
   zhCN,
   zhTW,
 } from '@eightfold.ai/octuple/lib/locale';
+import { canUseDom } from './canUseDom';
 
-const getDOMLanguage = (): string =>
-  window.i18nLang || navigator.language || 'en';
+const getDOMLanguage = (): string => {
+  return (
+    (canUseDom() && window?.i18nLang) ||
+    (canUseDom() && navigator?.language) ||
+    'en'
+  );
+};
 
 export const getConfigProviderLocale = (): Locale => {
   const domLangToOctupleLocale = {

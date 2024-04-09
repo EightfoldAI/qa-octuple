@@ -1,14 +1,12 @@
 import { Suspense } from 'react';
-
-import { type NextPageProps } from '@/@types/global';
+import Loading from '@/app/loading';
 import PCSLoggedOutWrapper from '@/modules/PCS/LoggedOut/components/PCSLoggedOutWrapper.client';
 
-function PCSLoggedOutPage(props: NextPageProps) {
-  const { searchParams } = props;
+function PCSLoggedOutPage() {
   return (
-    <PCSLoggedOutWrapper searchParams={searchParams}>
+    <PCSLoggedOutWrapper>
       {/* Exampe calling Server Component inside Client Component with Suspense */}
-      <Suspense fallback={<p>Loading...</p>}>
+      <Suspense fallback={<Loading />}>
         <p>Server code</p>
       </Suspense>
     </PCSLoggedOutWrapper>
