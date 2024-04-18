@@ -392,7 +392,6 @@ function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
         />
       </Nav>
       <Header
-        role="banner"
         style={{
           background:
             'url("https://raw.githubusercontent.com/dkilgore-eightfold/static/main/images/career_hero_8.jpg") center center no-repeat',

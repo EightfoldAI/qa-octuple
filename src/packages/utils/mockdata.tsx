@@ -1470,7 +1470,7 @@ export const sampleRoleList: Role[] = [
   },
   {
     cart: false,
-    geo: ['Bangalore', 'Noida, Uttar Pradesh, India'],
+    geo: ['Bangalore, Karnataka, India', 'Noida, Uttar Pradesh, India'],
     index: 1,
     jd: (
       <>
@@ -2903,7 +2903,7 @@ export const sampleRoleList: Role[] = [
   },
   {
     cart: false,
-    geo: 'Bangalore',
+    geo: 'Bangalore, Karnataka, India',
     index: 7,
     jd: (
       <>
@@ -6102,7 +6102,7 @@ export const sampleRoleList: Role[] = [
   },
   {
     cart: false,
-    geo: 'United States',
+    geo: 'Santa Clara, CA, United States',
     index: 19,
     jd: (
       <>

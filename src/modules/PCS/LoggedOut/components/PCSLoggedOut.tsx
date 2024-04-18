@@ -152,6 +152,18 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
   const jobSelectRef = useRef<HTMLDivElement>(null);
   const locationSelectTwoRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * Mock the first run experience for the user via a query string.
+   */
+  useMemo(() => {
+    if (searchParams) {
+      const parsedParam = searchParams.get('firstRun');
+      console.log('firstReun search param value: ', parsedParam);
+      const showIndex: number = parseInt(parsedParam ?? '0', 10) ?? 0;
+      setFirstRunVisible(showIndex === 0);
+    }
+  }, []);
+
   const screens = useBreakpoint();
   const isDesktop = screens.md;
 
@@ -280,18 +292,6 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
   useEffect(() => {
     console.log('selectedJobList', selectedJobList);
   }, [selectedJobList]);
-
-  /**
-   * Mock the first run experience for the user via a query string.
-   */
-  useMemo(() => {
-    if (searchParams) {
-      const parsedParam = searchParams.get('firstRun');
-      console.log('firstReun search param value: ', parsedParam);
-      const showIndex: number = parseInt(parsedParam ?? '0', 10) ?? 0;
-      setFirstRunVisible(showIndex === 0);
-    }
-  }, []);
 
   /**
    * From here, we do some naive filtering of the role list based on useState properties.
@@ -837,7 +837,6 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
         />
       </Nav>
       <Header
-        role="banner"
         style={{
           background:
             'url("https://raw.githubusercontent.com/dkilgore-eightfold/static/main/images/career_hero_8.jpg") center center no-repeat',
