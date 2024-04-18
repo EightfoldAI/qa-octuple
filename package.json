@@ -10,7 +10,6 @@
   "bugs": {
     "url": "https://github.com/EightfoldAI/qa-octuple/issues"
   },
-  "packageManager": "npm@1.22.22",
   "engines": {
     "node": ">=20.11.1"
   },
