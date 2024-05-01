@@ -319,6 +319,7 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                 >
                   <Stack direction="horizontal" flexGap='xs' fullWidth>
                     <Button
+                      htmlType='button'
                       onClick={() => setUploadModalVisible(true)}
                       text="Upload Resume"
                     />
