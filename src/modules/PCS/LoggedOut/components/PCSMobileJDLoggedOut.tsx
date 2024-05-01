@@ -12,6 +12,8 @@ import {
   Carousel,
   CarouselSize,
   Col,
+  Drawer,
+  DrawerVariant,
   Dropdown,
   Grid,
   Icon,
@@ -23,8 +25,6 @@ import {
   List,
   Menu,
   MenuItemType,
-  Modal,
-  ModalSize,
   OcFile,
   Pill,
   Row,
@@ -35,14 +35,14 @@ import {
   Stack,
   Tooltip,
   TooltipTheme,
-  Upload,
   UploadFile,
   UploadFileStatus,
   UploadProps,
-  UploadSize,
   PillSize,
   LinkButtonShape,
+  LinkButtonWidth,
 } from '@eightfold.ai/octuple';
+import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal';
 import {
   AppProps,
   Employee,
@@ -62,14 +62,13 @@ import {
   sampleRoleList,
   sampleVideoList,
 } from '@/packages/utils/mockdata';
-import AppFooter from '@/modules/Shared/components/AppFooter';
 
 const { Content, Header, Nav, Section } = Layout;
-const { Dropzone } = Upload;
 
 const { useBreakpoint } = Grid;
 
 import styles from './PCSMobileJDLoggedOut.module.css';
+import { canUseDom } from '@/packages/utils/canUseDom';
 
 function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
   const searchParams = useSearchParams();
@@ -347,6 +346,33 @@ function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
     />
   );
 
+  const getDrawerHeight = (): string => {
+    const drawerHeight: number = 180;
+    let height: number = 0;
+    if (canUseDom()) {
+      height = Math.max(
+        document?.documentElement.clientHeight || 0,
+        window?.innerHeight || 0
+      );
+    }
+    return `${height - drawerHeight}px`;
+  };
+
+  const hintSnapBreakPoints = [
+    {
+      breakpoint: 480,
+      position: {
+        top: 'calc(100vh - 40px)',
+      },
+    },
+    {
+      breakpoint: 0,
+      position: {
+        top: getDrawerHeight(),
+      },
+    },
+  ];
+
   return (
     <Layout classNames="octuple">
       <Nav
@@ -479,9 +505,10 @@ function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
                         fullWidth
                         justify="center"
                       >
-                        <Button
+                        <LinkButton
+                          href={`/pcs/apply?index=${selectedRole}`}
                           text="Apply now"
-                          variant={ButtonVariant.Primary}
+                          variant={LinkButtonVariant.Primary}
                         />
                         <Button
                           text={
@@ -933,48 +960,35 @@ function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
             </Col>
           </Row>
         </Section>
-        <Modal
-          aria-label="Upload your resume"
-          body={
-            <Stack
-              align="center"
-              direction="vertical"
-              flexGap="m"
-              justify="center"
-              fullWidth
-              style={{ height: '100%', paddingBottom: 100 }}
-            >
-              <h1>
-                Upload your resume and see jobs that match your skills and
-                experience
-              </h1>
-              <Dropzone
-                {...uploadProps}
-                fullWidth={!isDesktop}
-                classNames={styles.uploadModalDropzone}
-                size={UploadSize.Medium}
-                style={{ minWidth: !isDesktop ? 200 : 520 }}
+        <UploadModal
+          onClose={() => setUploadModalVisible(false)}
+          uploadProps={uploadProps}
+          visible={uploadModalVisible}
+        />
+        <Drawer
+          children={
+            <Stack align="center" direction="vertical" flexGap="xs" fullWidth>
+              <LinkButton
+                href={`/pcs/apply?index=${selectedRole}`}
+                linkButtonWidth={LinkButtonWidth.fill}
+                text="Apply now"
+                variant={LinkButtonVariant.Primary}
               />
-              <p style={{ textAlign: 'center' }}>
-                Don't have a resume? Use our resume builder.
-              </p>
               <Button
-                buttonWidth={ButtonWidth.fitContent}
-                text="Build your resume"
+                buttonWidth={ButtonWidth.fill}
+                text="Add to Job Cart"
                 variant={ButtonVariant.Secondary}
               />
             </Stack>
           }
-          closeButtonProps={{
-            ariaLabel: 'Close',
-          }}
-          modalClassNames={styles.uploadModal}
-          onClose={() => setUploadModalVisible(false)}
-          size={ModalSize.fullscreen}
-          visible={uploadModalVisible}
+          headerPadding={false}
+          maskClosable={false}
+          overlay={false}
+          scrollLock={false}
+          snapBreakPoints={hintSnapBreakPoints}
+          variant={DrawerVariant.Hint}
         />
       </Content>
-      <AppFooter />
       <SnackbarContainer />
     </Layout>
   );

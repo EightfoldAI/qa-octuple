@@ -1,6 +1,6 @@
 import React from 'react';
 import type { NextPageProps } from '@/@types/global';
-import { IconName, LinkButtonVariant } from '@eightfold.ai/octuple';
+import { ButtonVariant, IconName, LinkButtonVariant } from '@eightfold.ai/octuple';
 
 export const jobs = {
   softwareengineer: 'Software Engineer',
@@ -66,9 +66,11 @@ export interface AppProps {
 
 export interface LaunchPadNavItem {
   disabled: boolean;
+  index: number;
   text: string;
-  url: string;
-  variant: LinkButtonVariant;
+  launchPadNavigationSubList?: LaunchPadNavItem[];
+  url?: string;
+  variant?: ButtonVariant | LinkButtonVariant;
 }
 
 export interface PCSNavItem {

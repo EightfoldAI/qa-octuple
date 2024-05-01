@@ -22,12 +22,3 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.uploadModal {
-  --background-color: var(--primary-background3-color);
-  text-align: center;
-}
-
-.uploadModalDropzone {
-  --background-color: #ffffff;
-}

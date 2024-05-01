@@ -64,7 +64,9 @@ import {
   PillSize,
   TextInputShape,
   TextInput,
+  LinkButtonVariant,
 } from '@eightfold.ai/octuple';
+import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal';
 import {
   AppProps,
   Department,
@@ -893,7 +895,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                 shape={SelectShape.Pill}
                 style={{ minWidth: 'fit-content' }}
                 textInputProps={{
-                  iconProps: { path: IconName.mdiMapMarkerOutline }, // TODO: Fix icon position bug when clearable.
+                  iconProps: { path: IconName.mdiMapMarkerOutline },
                   placeholder: 'City, state, zip code, or "hybrid"',
                 }}
               />
@@ -2271,9 +2273,10 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                             fullWidth
                             justify="center"
                           >
-                            <Button
+                            <LinkButton
+                              href={`/pcs/apply?index=${selectedRole}`}
                               text="Apply now"
-                              variant={ButtonVariant.Primary}
+                              variant={LinkButtonVariant.Primary}
                             />
                             <Button
                               text={
@@ -2852,44 +2855,9 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
             visible={firstRunVisible}
           />
         )}
-        <Modal
-          aria-label="Upload your resume"
-          body={
-            <Stack
-              align="center"
-              direction="vertical"
-              flexGap="m"
-              justify="center"
-              fullWidth
-              style={{ height: '100%', paddingBottom: 100 }}
-            >
-              <h1>
-                Upload your resume and see jobs that match your skills and
-                experience
-              </h1>
-              <Dropzone
-                {...uploadProps}
-                fullWidth={!isDesktop}
-                classNames={styles.uploadModalDropzone}
-                size={UploadSize.Medium}
-                style={{ minWidth: !isDesktop ? 200 : 520 }}
-              />
-              <p style={{ textAlign: 'center' }}>
-                Don't have a resume? Use our resume builder.
-              </p>
-              <Button
-                buttonWidth={ButtonWidth.fitContent}
-                text="Build your resume"
-                variant={ButtonVariant.Secondary}
-              />
-            </Stack>
-          }
-          closeButtonProps={{
-            ariaLabel: 'Close',
-          }}
-          modalClassNames={styles.uploadModal}
+        <UploadModal
           onClose={() => setUploadModalVisible(false)}
-          size={ModalSize.fullscreen}
+          uploadProps={uploadProps}
           visible={uploadModalVisible}
         />
       </Content>

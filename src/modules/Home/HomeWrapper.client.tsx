@@ -2,13 +2,19 @@
 
 import React, { useState } from 'react';
 import {
+  Button,
+  ButtonShape,
   Col,
+  Dropdown,
   Grid,
   Layout,
   Link,
   LinkButton,
   LinkButtonShape,
   List,
+  Menu,
+  MenuItemType,
+  MenuVariant,
   Row,
 } from '@eightfold.ai/octuple';
 import { LaunchPadNavItem } from '@/packages/utils/mockdata.types';
@@ -61,6 +67,33 @@ function HomePageWrapper() {
     setBannerImage(bannerImageCycle[randomBannerImageNumber]);
   });
 
+  const PCSLinkOverlay = (item: LaunchPadNavItem) => (
+    <Menu
+      items={[
+        {
+          disabled: item.launchPadNavigationSubList?.[0].disabled,
+          type: MenuItemType.link,
+          text: 'Logged out',
+          href: item.launchPadNavigationSubList?.[0].url,
+        },
+        {
+          disabled: item.launchPadNavigationSubList?.[1].disabled,
+          type: MenuItemType.link,
+          text: 'Apply form',
+          href: item.launchPadNavigationSubList?.[1].url,
+        },
+        {
+          disabled: item.launchPadNavigationSubList?.[2].disabled,
+          type: MenuItemType.link,
+          text: 'Logged in',
+          href: item.launchPadNavigationSubList?.[2].url,
+        },
+      ]}
+      role="list"
+      variant={MenuVariant.neutral}
+    />
+  );
+
   return (
     <Layout classNames="octuple">
       <Nav aria-label="Main navigation" classNames={styles.nav}>
@@ -93,15 +126,34 @@ function HomePageWrapper() {
           layout="horizontal"
           role="menubar"
           renderItem={(item: LaunchPadNavItem) => (
-            <LinkButton
-              classNames={styles.navButton}
-              disabled={item.disabled}
-              href={item.url}
-              role="menuitem"
-              shape={LinkButtonShape.Rectangle}
-              text={item.text}
-              variant={item.variant}
-            />
+            <>
+              {item.index === 0 && (
+                <Dropdown
+                  initialFocus
+                  overlay={PCSLinkOverlay(item)}
+                >
+                  <Button
+                    classNames={styles.navButton}
+                    disabled={item.disabled}
+                    role="menuitem"
+                    shape={ButtonShape.Rectangle}
+                    text={item.text}
+                    variant={item.variant}
+                  />
+                </Dropdown>
+              )}
+              {item.index >= 1 && (
+                <LinkButton
+                  classNames={styles.navButton}
+                  disabled={item.disabled}
+                  href={item.url}
+                  role="menuitem"
+                  shape={LinkButtonShape.Rectangle}
+                  text={item.text}
+                  variant={item.variant}
+                />
+              )}
+            </>
           )}
           style={{ textAlign: 'center' }} // inline style or classNames may be used to apply styles
         />

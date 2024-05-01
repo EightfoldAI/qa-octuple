@@ -347,7 +347,7 @@ h4,
 h5,
 h6,
 .octuple-subtitle {
-  font-weight: 500 !important;
+  font-weight: 400 !important;
 }
 
 .footer {
@@ -375,7 +375,8 @@ h6,
   line-height: 20px;
 }
 
-.pcsLoggedOutNav {
+.pcsLoggedOutNav,
+.pcsApplyNav {
   align-items: center;
   background: transparent;
   display: flex;

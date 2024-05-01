@@ -12,7 +12,7 @@ import {
   VideoItem,
   Workplace,
 } from './mockdata.types';
-import { IconName, Link, LinkButtonVariant } from '@eightfold.ai/octuple';
+import { ButtonVariant, IconName, Link, LinkButtonVariant } from '@eightfold.ai/octuple';
 
 // BEGIN TODO: Add to octuple.
 export const mdiAccountSearchOutline: IconName =
@@ -33,24 +33,47 @@ export const mockAvatarProps = {
 export const launchPadNavigationList: LaunchPadNavItem[] = ([] = [
   {
     disabled: false,
+    index: 0,
     text: 'PCS',
-    url: '/pcs/loggedout?firstRun=0',
-    variant: LinkButtonVariant.Neutral,
+    variant: ButtonVariant.Neutral,
+    launchPadNavigationSubList: ([] = [
+      {
+        disabled: false,
+        index: 0,
+        text: 'Logged out',
+        url: '/pcs/loggedout?firstRun=0',
+      },
+      {
+        disabled: false,
+        index: 0,
+        text: 'Apply form',
+        url: '/pcs/apply?index=0',
+      },
+      {
+        disabled: true,
+        index: 0,
+        text: 'Logged in',
+        url: '/pcs/loggedin?firstRun=0',
+      }
+    ])
   },
   {
     disabled: true,
+    index: 1,
     text: 'TA',
     url: '/ta',
     variant: LinkButtonVariant.Neutral,
   },
   {
     disabled: true,
+    index: 2,
     text: 'TM',
     url: '/tm',
     variant: LinkButtonVariant.Neutral,
   },
   {
     disabled: true,
+    index: 3,
     text: 'Admin console',
     url: '/admin',
     variant: LinkButtonVariant.Neutral,
