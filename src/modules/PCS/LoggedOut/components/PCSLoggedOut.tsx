@@ -1483,13 +1483,9 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                 <Col span={getFormColSpan()}>
                                   <Form.Item
                                     name={'first'}
-                                    label={
-                                      <span style={{ marginInlineStart: 8 }}>
-                                        First name
-                                      </span>
-                                    }
+                                    label="First name"
                                     labelAlign="left"
-                                    rules={[{ required: true }]}
+                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1502,13 +1498,9 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                 <Col span={getFormColSpan()}>
                                   <Form.Item
                                     name={'last'}
-                                    label={
-                                      <span style={{ marginInlineStart: 8 }}>
-                                        Last name
-                                      </span>
-                                    }
+                                    label="Last name"
                                     labelAlign="left"
-                                    rules={[{ required: true }]}
+                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1523,13 +1515,9 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                 <Col span={getFormColSpan()}>
                                   <Form.Item
                                     name={'email'}
-                                    label={
-                                      <span style={{ marginInlineStart: 8 }}>
-                                        Email
-                                      </span>
-                                    }
+                                    label="Email"
                                     labelAlign="left"
-                                    rules={[{ required: true }]}
+                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1543,13 +1531,9 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                 <Col span={getFormColSpan()}>
                                   <Form.Item
                                     name={'phone'}
-                                    label={
-                                      <span style={{ marginInlineStart: 8 }}>
-                                        Phone
-                                      </span>
-                                    }
+                                    label="Phone"
                                     labelAlign="left"
-                                    rules={[{ required: true }]}
+                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1606,6 +1590,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                               ? ButtonWidth.fitContent
                               : ButtonWidth.fill
                           }
+                          htmlType='submit'
                           onClick={() => {
                             if (currentQuestion === 'question four') {
                               form.submit();

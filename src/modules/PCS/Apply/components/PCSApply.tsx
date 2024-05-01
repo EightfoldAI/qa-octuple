@@ -24,6 +24,7 @@ import {
   UploadProps,
   TextInputShape,
   TextInput,
+  LinkButtonVariant,
 } from '@eightfold.ai/octuple';
 import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal';
 import { AppProps, PCSNavItem } from '@/packages/utils/mockdata.types';
@@ -310,12 +311,31 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                   Application {currentStep}
                 </legend>
                 <Form.Item
-                  name={'first'}
-                  label={
-                    <span style={{ marginInlineStart: 8 }}>First name</span>
-                  }
+                  name={'resume'}
+                  label="Resume"
                   labelAlign="left"
-                  rules={[{ required: true }]}
+                  rules={[{ required: true, validateTrigger: 'onSubmit' }]}
+                  style={{ marginBottom: 8 }}
+                >
+                  <Stack direction="horizontal" flexGap='xs' fullWidth>
+                    <Button
+                      onClick={() => setUploadModalVisible(true)}
+                      text="Upload Resume"
+                    />
+                    {' '}
+                    <span style={{ lineHeight: '36px' }}>or</span>
+                    {' '}
+                    <LinkButton
+                      text="Build Resume"
+                      variant={LinkButtonVariant.SystemUI}
+                    />
+                  </Stack>
+                </Form.Item>
+                <Form.Item
+                  name={'first'}
+                  label="First name"
+                  labelAlign="left"
+                  rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                   style={{ marginBottom: 8 }}
                 >
                   <TextInput
@@ -326,11 +346,9 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                 </Form.Item>
                 <Form.Item
                   name={'last'}
-                  label={
-                    <span style={{ marginInlineStart: 8 }}>Last name</span>
-                  }
+                  label="Last name"
                   labelAlign="left"
-                  rules={[{ required: true }]}
+                  rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                   style={{ marginBottom: 8 }}
                 >
                   <TextInput
@@ -341,9 +359,9 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                 </Form.Item>
                 <Form.Item
                   name={'phone'}
-                  label={<span style={{ marginInlineStart: 8 }}>Phone</span>}
+                  label="Phone"
                   labelAlign="left"
-                  rules={[{ required: true }]}
+                  rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                   style={{ marginBottom: 8 }}
                 >
                   <Stack direction="horizontal" flexGap="xs" fullWidth>
@@ -372,9 +390,9 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                 </Form.Item>
                 <Form.Item
                   name={'email'}
-                  label={<span style={{ marginInlineStart: 8 }}>Email</span>}
+                  label="Email"
                   labelAlign="left"
-                  rules={[{ required: true }]}
+                  rules={[{ required: true, validateTrigger: 'onSubmit' }]}
                   style={{ marginBottom: 8 }}
                 >
                   <TextInput
