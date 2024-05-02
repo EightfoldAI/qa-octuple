@@ -130,6 +130,9 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
   const [selectedRole, setSelectedRole] = useState<number | undefined>(0);
   const [selectedJobList, setSelectedJobList] = useState<Job[]>([]);
   const [questionsEnabled, setQuestionsEnabled] = useState<boolean>(false);
+  const [articleCardDropShadow, setArticleCardDropShadow] = useState<
+    number | undefined
+  >(undefined);
   const [employeeCardDropShadow, setEmployeeCardDropShadow] = useState<
     number | undefined
   >(undefined);
@@ -2450,6 +2453,8 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                   selectedEmployee === item.index
                                     ? '1px solid var(--primary-color)'
                                     : '1px solid var(--border-color)',
+                                marginBottom: '16px',
+                                marginTop: '16px',
                                 minWidth: 224,
                               }}
                               tabIndex={0}
@@ -2595,6 +2600,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     ? '1px solid var(--primary-color)'
                                     : '1px solid var(--border-color)',
                                 marginBottom: '16px',
+                                marginTop: '16px',
                                 minWidth: '100%',
                               }}
                               tabIndex={0}
@@ -2675,6 +2681,13 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                         children: sampleNewsList.map((item: NewsItem) => (
                           <Card
                             bordered
+                            dropShadow={articleCardDropShadow === item.index}
+                            onMouseOver={(e) =>
+                              setArticleCardDropShadow(item.index)
+                            }
+                            onMouseLeave={(e) =>
+                              setArticleCardDropShadow(undefined)
+                            }
                             children={
                               <Link
                                 classNames="pointer"
@@ -2718,6 +2731,8 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                             height={352}
                             style={{
                               cursor: 'pointer',
+                              marginBottom: '16px',
+                              marginTop: '16px',
                               minWidth: 256,
                             }}
                             tabIndex={0}

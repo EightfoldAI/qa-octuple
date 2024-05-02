@@ -391,6 +391,7 @@ export const sampleNewsList: NewsItem[] = [
   {
     image:
       'https://static01.nyt.com/images/2018/12/07/business/07hiring/07hiring-facebookJumbo-v2.jpg?year=2018&h=550&w=1050&s=2eeab6d10918406e76cba5b6c68e8c1192e50528bbc9d5b639e1af40cf6dee62&k=ZQJBKqZ0VN',
+    index: 0,
     description:
       'A form of artificial intelligence is being used to surface job candidates with the attributes of a perfect fit, even without conventional credentials.',
     title: 'A.I. as Talent Scout: Unorthodox Hires, and Maybe Lower Pay',
@@ -399,6 +400,7 @@ export const sampleNewsList: NewsItem[] = [
   {
     image:
       'https://eightfold.ai/wp-content/uploads/Future_of_Work_with_Jenny_Dearborn.jpg',
+    index: 1,
     description:
       'With 25+ years in data analytics, talent technologies, and corporate learning, Jenny Dearborn recently joined our board of advisors.',
     title: 'Leading the future of work: An interview with Jenny Dearborn',
@@ -406,6 +408,7 @@ export const sampleNewsList: NewsItem[] = [
   },
   {
     image: 'https://eightfold.ai/wp-content/uploads/image3-18.jpg',
+    index: 2,
     description:
       "The data is clear: Diversity and inclusivity boost a company's bottom line. Here are five ways to foster an inclusive culture in your organization.",
     title:
@@ -414,6 +417,7 @@ export const sampleNewsList: NewsItem[] = [
   },
   {
     image: 'https://eightfold.ai/wp-content/uploads/image3-13.jpg',
+    index: 3,
     description:
       'Unconscious biases can hinder your hiring efforts. AI-enabled tools can help eliminate hiring biases and improve your entire process.',
     title:
@@ -423,6 +427,7 @@ export const sampleNewsList: NewsItem[] = [
   {
     image:
       'https://eightfold.ai/wp-content/uploads/EconomicsTimes-Tata-Communications-copy-2.png',
+    index: 4,
     description:
       'Tata Communications turns to AI for hiring and uses Eightfold to create a unified platform bridging multiple ATS, HRIS, and CRM systems. Read blog.',
     title:
@@ -432,6 +437,7 @@ export const sampleNewsList: NewsItem[] = [
   {
     image:
       'https://eightfold.ai/wp-content/uploads/image2-3-e1549909690648.jpg',
+    index: 5,
     description:
       "Want to identify future leaders and nurture your organization's top performing talent? Here's how data can help.",
     title:
@@ -440,6 +446,7 @@ export const sampleNewsList: NewsItem[] = [
   },
   {
     image: 'https://eightfold.ai/wp-content/uploads/iStock-682104014.jpg',
+    index: 6,
     description:
       'We started Eightfold because we believe that AI technology has a unique potential to help companies and workers find each other, making the job search process better and solving many of the intractable challenges of modern recruiting.',
     title: 'New York Times: Eightfold AI finds people for hard-to-fill roles',
@@ -448,6 +455,7 @@ export const sampleNewsList: NewsItem[] = [
   {
     image:
       'https://eightfold.ai/wp-content/uploads/Better_Resume_and_Job_descriptions.jpg',
+    index: 7,
     description:
       'According to a recent Harris Media poll, 73% of senior execs say that finding talent is a critical problem at their company—despite an overload of resumes.',
     title: "That resume stinks. But that job description's not much better.",

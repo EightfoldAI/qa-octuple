@@ -93,8 +93,9 @@ export interface VideoItem {
 }
 
 export interface NewsItem {
-  image?: string;
   description?: string;
+  image?: string;
+  index?: number;
   title?: string;
   url?: string;
 }
