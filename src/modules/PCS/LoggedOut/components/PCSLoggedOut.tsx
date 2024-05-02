@@ -2455,6 +2455,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     ? '1px solid var(--primary-color)'
                                     : '1px solid var(--border-color)',
                                 marginBottom: '16px',
+                                marginInlineStart: '4px',
                                 marginTop: '16px',
                                 minWidth: 224,
                               }}
@@ -2465,6 +2466,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                           containerPadding: 8,
                           gap: 24,
                         }}
+                        classNames={styles.carousel}
                         style={{ width: '100%' }}
                         type="scroll"
                       />
@@ -2601,6 +2603,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     ? '1px solid var(--primary-color)'
                                     : '1px solid var(--border-color)',
                                 marginBottom: '16px',
+                                marginInlineStart: '4px',
                                 marginTop: '16px',
                                 minWidth: '100%',
                               }}
@@ -2611,6 +2614,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                           containerPadding: 8,
                           gap: 24,
                         }}
+                        classNames={styles.carousel}
                         style={{ width: '100%' }}
                         type="scroll"
                       />
@@ -2733,6 +2737,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                             style={{
                               cursor: 'pointer',
                               marginBottom: '16px',
+                              marginInlineStart: '4px',
                               marginTop: '16px',
                               minWidth: 256,
                             }}
@@ -2743,6 +2748,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                         containerPadding: 8,
                         gap: 24,
                       }}
+                      classNames={styles.carousel}
                       size={CarouselSize.Large}
                       style={{ width: '100%' }}
                       type="scroll"

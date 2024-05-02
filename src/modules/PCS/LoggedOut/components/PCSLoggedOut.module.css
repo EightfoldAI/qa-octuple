@@ -23,6 +23,10 @@
   text-overflow: ellipsis;
 }
 
+.carousel {
+  margin-inline-start: -4px;
+}
+
 .expandedContent {
   opacity: 0;
   pointer-events: none;
