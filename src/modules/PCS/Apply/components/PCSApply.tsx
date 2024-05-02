@@ -19,12 +19,12 @@ import {
   SnackbarContainer,
   Stack,
   TextInputWidth,
-  UploadFile,
   UploadFileStatus,
   UploadProps,
   TextInputShape,
   TextInput,
   LinkButtonVariant,
+  UploadFile,
 } from '@eightfold.ai/octuple';
 import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal';
 import { AppProps, PCSNavItem } from '@/packages/utils/mockdata.types';
@@ -48,6 +48,8 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
   const [data, setData] = useState<Record<string, unknown>>({});
   const [thumbUrl, setThumbUrl] = useState<string>('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileName, setFileName] = useState<string>('');
+  const [fileUploaded, setFileUploaded] = useState<boolean | undefined>(false);
   const [uploadModalVisible, setUploadModalVisible] = useState<boolean>(false);
 
   const defaultCountry = countries.find(
@@ -88,6 +90,8 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
   const isDesktop = screens.md;
 
   const [form] = Form.useForm();
+
+  // const values = Form.useWatch([], form);
   const formLayout = {
     labelCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
     wrapperCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
@@ -95,11 +99,20 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
 
   const onFinish = (values: any) => {
     console.log(values);
+    form.validateFields();
   };
 
   const onReset = () => {
     form.resetFields();
   };
+
+  /** Validation may be done using any state variable or object */
+  const uploadValidator = () => {
+    if (fileUploaded) {
+        return Promise.resolve();
+    }
+    return Promise.reject(new Error('Resume is required'));
+};
 
   // TODO: Implement the following functions to handle the form steps if needed.
   // const getNextStep = (): string => {
@@ -159,7 +172,7 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
   /**
    * From here we mock the upload functionality.
    */
-  const onChange: UploadProps['onChange'] = async (info: any) => {
+  const onUploadChange: UploadProps['onChange'] = async (info: any) => {
     if (info.file.status === 'removed') {
       await resetThumbAsync().then(() => {
         setData({
@@ -211,7 +224,7 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
     listType: 'picture',
     maxCount: 1,
     name: 'file',
-    onChange: onChange,
+    onChange: onUploadChange,
   };
 
   useEffect(() => {
@@ -228,12 +241,15 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
       snack.servePositive({
         content: `${data.name} file uploaded successfully`,
       });
+      setFileUploaded(true);
+      setFileName(`${data.name}`);
     } else if (data.status === 'removed') {
       const resetData = async () => {
         setFileList([]);
         setData({});
       };
       resetData().catch(console.error);
+      setFileUploaded(false);
     }
   }, [data]);
 
@@ -300,7 +316,7 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
             {...formLayout}
             form={form}
             layout="vertical"
-            name={'apply-form'}
+            name="applyForm"
             onFinish={onFinish}
             requiredMark
             style={{ paddingBottom: 80 }}
@@ -314,20 +330,18 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                   name={'resume'}
                   label="Resume"
                   labelAlign="left"
-                  rules={[{ required: true, validateTrigger: 'onSubmit' }]}
+                  rules={[{ required: true, validateTrigger: 'onSubmit', validator: uploadValidator }]}
                   style={{ marginBottom: 8 }}
-                >
-                  <Stack direction="horizontal" flexGap='xs' fullWidth>
+                  >
+                  <Stack direction="horizontal" flexGap="xs" fullWidth>
                     <Button
-                      htmlType='button'
+                      htmlType="button"
                       onClick={() => setUploadModalVisible(true)}
-                      text="Upload Resume"
-                    />
-                    {' '}
-                    <span style={{ lineHeight: '36px' }}>or</span>
-                    {' '}
+                      text={fileUploaded ? `${fileName}` : 'Upload resume'}
+                    />{' '}
+                    <span style={{ lineHeight: '36px' }}>or</span>{' '}
                     <LinkButton
-                      text="Build Resume"
+                      text="Build resume"
                       variant={LinkButtonVariant.SystemUI}
                     />
                   </Stack>

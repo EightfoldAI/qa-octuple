@@ -1671,6 +1671,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                         >
                           <Dropzone
                             {...uploadProps}
+                            accept='.doc,.docx,.pdf,.txt'
                             fullWidth={!screens.lg}
                             size={
                               !screens.lg ? UploadSize.Medium : UploadSize.Small
@@ -2833,6 +2834,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                 </p>
                 <Dropzone
                   {...uploadProps}
+                  accept='.doc,.docx,.pdf,.txt'
                   fullWidth={!isDesktop}
                   classNames={styles.uploadModalDropzone}
                   size={UploadSize.Medium}
