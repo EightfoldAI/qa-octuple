@@ -2194,6 +2194,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                 ? '1px solid var(--primary-color)'
                                 : '1px solid var(--border-color)',
                             marginBottom: '16px',
+                            marginInlineStart: '4px',
                             minWidth: '100%',
                           }}
                           tabIndex={0}
