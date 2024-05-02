@@ -40,6 +40,7 @@ const { Content, Header, Nav, Section } = Layout;
 const { useBreakpoint } = Grid;
 
 import styles from './pcsapply.module.css';
+import { canUseDom } from '@/packages/utils/canUseDom';
 
 function PCSApply(_props: PropsWithChildren<AppProps>) {
   const searchParams = useSearchParams();
@@ -51,6 +52,7 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
   const [fileName, setFileName] = useState<string>('');
   const [fileUploaded, setFileUploaded] = useState<boolean | undefined>(false);
   const [uploadModalVisible, setUploadModalVisible] = useState<boolean>(false);
+  const [submittable, setSubmittable] = useState<boolean>(false);
 
   const defaultCountry = countries.find(
     (country) => country.name === 'United States'
@@ -91,15 +93,26 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
 
   const [form] = Form.useForm();
 
-  // const values = Form.useWatch([], form);
+  const values = Form.useWatch([], form);
+
   const formLayout = {
     labelCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
     wrapperCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log(values);
-    form.validateFields();
+    await form.validateFields()
+      .then(() => setSubmittable(true))
+      .catch(() => setSubmittable(false));;
+    if (submittable && canUseDom()) {
+      window?.location.replace('/pcs/loggedout?firstRun=1');
+    } else {
+      snack.serveDisruptive({
+        closable: true,
+        content: 'Please fill in all required fields.',
+      });
+    }
   };
 
   const onReset = () => {
