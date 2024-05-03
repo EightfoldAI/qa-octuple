@@ -93,18 +93,12 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
 
   const [form] = Form.useForm();
 
-  const values = Form.useWatch([], form);
+  //const values = Form.useWatch([], form);
 
-  const formLayout = {
-    labelCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
-    wrapperCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
-  };
-
-  const onFinish = async (values: any) => {
-    console.log(values);
-    await form.validateFields()
-      .then(() => setSubmittable(true))
-      .catch(() => setSubmittable(false));;
+  useEffect(() => {
+    if (!submittable) {
+      return;
+    }
     if (submittable && canUseDom()) {
       window?.location.replace('/pcs/loggedout?firstRun=1');
     } else {
@@ -113,6 +107,19 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
         content: 'Please fill in all required fields.',
       });
     }
+  }, [submittable]);
+
+  const formLayout = {
+    labelCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
+    wrapperCol: { push: isDesktop ? 3 : 0, span: isDesktop ? 6 : 12 },
+  };
+
+  const onFinish = (values: any) => {
+    console.log(values);
+    form
+      .validateFields()
+      .then(() => setSubmittable(true))
+      .catch(() => setSubmittable(false));
   };
 
   const onReset = () => {
@@ -122,10 +129,20 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
   /** Validation may be done using any state variable or object */
   const uploadValidator = () => {
     if (fileUploaded) {
-        return Promise.resolve();
+      return Promise.resolve();
     }
     return Promise.reject(new Error('Resume is required'));
-};
+  };
+
+  useEffect(() => {
+    if (!fileUploaded) {
+      return;
+    }
+    console.log('File uploaded', fileUploaded);
+    console.log('File name', fileName);
+    console.log('File list', fileList);
+    form.validateFields(['resume']);
+  }, [fileUploaded]);
 
   // TODO: Implement the following functions to handle the form steps if needed.
   // const getNextStep = (): string => {
@@ -343,9 +360,15 @@ function PCSApply(_props: PropsWithChildren<AppProps>) {
                   name={'resume'}
                   label="Resume"
                   labelAlign="left"
-                  rules={[{ required: true, validateTrigger: 'onSubmit', validator: uploadValidator }]}
+                  rules={[
+                    {
+                      required: true,
+                      validateTrigger: 'onSubmit',
+                      validator: uploadValidator,
+                    },
+                  ]}
                   style={{ marginBottom: 8 }}
-                  >
+                >
                   <Stack direction="horizontal" flexGap="xs" fullWidth>
                     <Button
                       htmlType="button"
