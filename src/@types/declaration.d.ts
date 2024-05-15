@@ -12,3 +12,5 @@ declare module '*.svg?url' {
   const content: string;
   export default content;
 }
+
+declare module 'pdfjs-dist/build/pdf.worker.entry';
