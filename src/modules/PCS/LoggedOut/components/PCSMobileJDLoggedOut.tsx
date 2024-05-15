@@ -41,6 +41,7 @@ import {
   PillSize,
   LinkButtonShape,
   LinkButtonWidth,
+  SelectOption,
 } from '@eightfold.ai/octuple';
 import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal';
 import {
@@ -73,7 +74,8 @@ import { canUseDom } from '@/packages/utils/canUseDom';
 function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
   const searchParams = useSearchParams();
 
-  const [myLang, setMyLang] = useState(langs.en);
+  const defaultLang = langs.find((lang) => lang.name === 'English');
+  const [myLang, setMyLang] = useState<SelectOption | undefined>(undefined);
   const [selectedEmployee, setSelectedEmployee] = useState<number | undefined>(
     0
   );
@@ -206,14 +208,16 @@ function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
   /**
    * From here we mock the language selection.
    */
-  const languageOptions = Object.keys(langs).map((k) => ({
-    text: (langs as any)[k],
-    value: k,
+  const languageOptions: SelectOption[] = Object.keys(langs).map((k) => ({
+    disabled: (langs as any)[k].name !== 'English' ? true : false,
+    text: (langs as any)[k].name,
+    value: (langs as any)[k].name,
   }));
 
-  const onLangSelectChange = (options: any[]) => {
+  const onLangSelectChange = (options: SelectOption[]) => {
     options.forEach((option) => {
-      setMyLang(option);
+      const selectedLang = option.value;
+      setMyLang(selectedLang);
     });
   };
 
@@ -407,14 +411,18 @@ function PCSMobileJDLoggedOutWrapper(_props: PropsWithChildren<AppProps>) {
             width: 120,
           }}
           filterable
-          onClear={() => setMyLang('English')}
-          onOptionsChange={onLangSelectChange}
+          onClear={() => setMyLang(undefined)}
+          onOptionsChange={(options: SelectOption[]) =>
+            onLangSelectChange(options)
+          }
           options={languageOptions}
           shape={SelectShape.Pill}
           style={{ minWidth: 120, width: 120 }}
           textInputProps={{
-            placeholder: myLang,
+            clearButtonAriaLabel: 'Clear language',
+            placeholder: 'Language',
           }}
+          value={myLang?.value || defaultLang?.name}
         />
       </Nav>
       <Header
