@@ -8,7 +8,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { useSearchParams } from 'next/navigation';
+import {
+  ReadonlyURLSearchParams,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import useMeasure from 'react-use-measure';
 import { a, useSpring } from '@react-spring/web';
 import {
@@ -40,7 +45,6 @@ import {
   MenuItemType,
   Modal,
   ModalSize,
-  OcFile,
   Pill,
   Row,
   SearchBox,
@@ -58,13 +62,13 @@ import {
   TooltipTheme,
   Upload,
   UploadFile,
-  UploadFileStatus,
   UploadProps,
   UploadSize,
   PillSize,
   TextInputShape,
   TextInput,
   LinkButtonVariant,
+  SelectOption,
 } from '@eightfold.ai/octuple';
 import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal';
 import {
@@ -72,9 +76,6 @@ import {
   Department,
   Employee,
   Job,
-  jobs,
-  langs,
-  locations,
   NewsItem,
   PCSNavItem,
   PerksItem,
@@ -84,6 +85,9 @@ import {
   VideoItem,
   Workplace,
 } from '@/packages/utils/mockdata.types';
+import { jobs } from '@/packages/utils/jobs';
+import { langs } from '@/packages/utils/langs';
+import { locations } from '@/packages/utils/locations';
 import {
   mdiAccountSearchOutline,
   mdiBrush,
@@ -103,6 +107,18 @@ import {
 import AppFooter from '@/modules/Shared/components/AppFooter';
 import { useSticky } from '@/packages/hooks/useSticky';
 import { canUseDom } from '@/packages/utils/canUseDom';
+import { extractResumeFromSections } from '@/packages/lib/parse-resume-from-pdf/extract-resume-from-sections';
+import { groupLinesIntoSections } from '@/packages/lib/parse-resume-from-pdf/group-lines-into-sections';
+import { groupTextItemsIntoLines } from '@/packages/lib/parse-resume-from-pdf/group-text-items-into-lines';
+import { readPdf } from '@/packages/lib/parse-resume-from-pdf/read-pdf';
+import { TextItems } from '@/packages/lib/parse-resume-from-pdf/types';
+import { parseResumeFromPdf } from '@/packages/lib/parse-resume-from-pdf';
+import { deepClone } from '@/packages/lib/parse-resume-from-pdf/deep-clone';
+import { ShowForm, initialSettings } from '@/packages/lib/redux/settingsSlice';
+import {
+  getHasUsedAppBefore,
+  saveStateToLocalStorage,
+} from '@/packages/lib/redux/local-storage';
 
 const { Content, Header, Nav, Section } = Layout;
 const { Dropzone } = Upload;
@@ -112,12 +128,14 @@ const { useBreakpoint } = Grid;
 import styles from './PCSLoggedOut.module.css';
 
 function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
-  const searchParams = useSearchParams();
+  const searchParams: ReadonlyURLSearchParams = useSearchParams();
+  const router: AppRouterInstance = useRouter();
 
   const [accordionExpanded, setAccordionExpanded] = useState<boolean>(true);
   const [advancedExpanded, setAdvancedExpanded] = useState<boolean>(false);
   const [firstRunVisible, setFirstRunVisible] = useState<boolean>(false);
-  const [myLang, setMyLang] = useState(langs.en);
+  const defaultLang = langs.find((lang) => lang.name === 'English');
+  const [myLang, setMyLang] = useState<SelectOption | undefined>(undefined);
   const [myLocation, setMyLocation] = useState('');
   const [myDepartmentList, setMyDepartmentList] = useState<Department[]>([]);
   const [mySeniorityList, setMySeniorityList] = useState<Seniority[]>([]);
@@ -139,9 +157,6 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
   const [jobCardDropShadow, setJobCardDropShadow] = useState<
     number | undefined
   >(undefined);
-  const [data, setData] = useState<Record<string, unknown>>({});
-  const [thumbUrl, setThumbUrl] = useState<string>('');
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploadModalVisible, setUploadModalVisible] = useState<boolean>(false);
   const [myJobCartList, setMyJobCartList] = useState<Role[]>([]);
   const [visibleQuestionFilter, setVisibleQuestionFilter] = useState<{
@@ -468,14 +483,16 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
   /**
    * From here we mock the language selection.
    */
-  const languageOptions = Object.keys(langs).map((k) => ({
-    text: (langs as any)[k],
-    value: k,
+  const languageOptions: SelectOption[] = Object.keys(langs).map((k) => ({
+    disabled: (langs as any)[k].name !== 'English' ? true : false,
+    text: (langs as any)[k].name,
+    value: (langs as any)[k].name,
   }));
 
-  const onLangSelectChange = (options: any[]) => {
+  const onLangSelectChange = (options: SelectOption[]) => {
     options.forEach((option) => {
-      setMyLang(option);
+      const selectedLang = option.value;
+      setMyLang(selectedLang);
     });
   };
 
@@ -554,85 +571,139 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
   };
 
   /**
-   * From here we mock the upload functionality.
+   * From here we mock the upload resume functionality.
    */
-  const onChange: UploadProps['onChange'] = async (info: any) => {
-    if (info.file.status === 'removed') {
-      await resetThumbAsync().then(() => {
-        setData({
-          ...info.file,
-          name: info.file.name,
-          percent: 0,
-          status: 'removed',
-          thumbUrl: '',
-        });
-      });
+  const defaultFileState = {
+    name: '',
+    size: 0,
+    fileUrl: '',
+  };
+
+  const [data, setData] = useState<Record<string, unknown>>({});
+  const [file, setFile] = useState(defaultFileState);
+  const [hasNonPdfFile, setHasNonPdfFile] = useState(false);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileName, setFileName] = useState<string>('');
+  const [fileUploaded, setFileUploaded] = useState<boolean | undefined>(false);
+  const [fileUrl, setFileUrl] = useState('');
+  const [textItems, setTextItems] = useState<TextItems>([]);
+  const lines = groupTextItemsIntoLines(textItems || []);
+  const sections = groupLinesIntoSections(lines);
+  const resume = extractResumeFromSections(sections);
+
+  useEffect(() => {
+    async function parse() {
+      if (!fileUrl) {
+        return;
+      }
+      const textItems = await readPdf(fileUrl);
+      setTextItems(textItems);
+    }
+    parse();
+    console.log('fileUrl', fileUrl);
+    console.log('Resume', resume);
+  }, [fileUrl]);
+
+  const onImport = async () => {
+    const resume = await parseResumeFromPdf(file.fileUrl);
+    if (!resume) {
       return;
     }
-    await generateThumbAsync(info.file).then(() => {
-      setData({
-        ...info.file,
-        name: info.file.name,
-        percent: 100,
-        status: 'done',
-        thumbUrl: info.file.preview,
-      });
-    });
-  };
-
-  const getBase64 = (file: OcFile): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-
-  const generateThumbAsync = async (file: UploadFile): Promise<void> => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj as OcFile);
+    const settings = deepClone(initialSettings);
+    if (getHasUsedAppBefore()) {
+      const sections = Object.keys(settings.formToShow) as ShowForm[];
+      const sectionToFormToShow: Record<ShowForm, boolean> = {
+        workExperience: resume.workExperience.length > 0,
+        education: resume.education.length > 0,
+        projects: resume.projects.length > 0,
+        skills: resume.skills.description.length > 0,
+        custom: resume.custom.description.length > 0,
+      };
+      for (const section of sections) {
+        settings.formToShow[section] = sectionToFormToShow[section];
+      }
     }
-    setThumbUrl(file.url || (file.preview as string));
+    saveStateToLocalStorage({ resume, settings });
   };
 
-  const resetThumbAsync = async (): Promise<void> => {
-    setThumbUrl('');
+  const setNewFile = (newFile: File) => {
+    if (file.fileUrl) {
+      URL.revokeObjectURL(file.fileUrl);
+    }
+
+    const { name, size } = newFile;
+    const fileUrl = URL.createObjectURL(newFile);
+    setFile({ name, size, fileUrl });
   };
 
   const uploadProps: UploadProps = {
-    customRequest() {
-      return true;
-    },
-    data: data,
-    fileList: fileList,
     listType: 'picture',
     maxCount: 1,
     name: 'file',
-    onChange: onChange,
-  };
-
-  useEffect(() => {
-    if (data.status === 'done') {
-      setFileList([
-        {
-          ...data,
-          uid: data.uid as string,
-          name: data.name as string,
-          status: data.status as UploadFileStatus,
-          thumbUrl: data.thumbUrl as string,
-        },
-      ]);
-      snack.servePositive({
-        content: `${data.name} file uploaded successfully`,
-      });
-    } else if (data.status === 'removed') {
+    onChange(info) {
+      const { status } = info.file;
+      console.log('info', info.file);
+      if (status === 'uploading') {
+        console.log(info.file, info.fileList);
+        if (info.file.originFileObj && canUseDom()) {
+          setFileName(`${info.file.name}`);
+          setFileUrl(
+            (window?.URL ? URL : webkitURL).createObjectURL(
+              info.file.originFileObj
+            )
+          );
+          const newFile = info.file.originFileObj as File;
+          setNewFile(newFile);
+        }
+      }
+      if (status === 'done') {
+        snack.servePositive({
+          content: `${info.file.name} file uploaded successfully`,
+        });
+        setFileUploaded(true);
+      } else if (status === 'error') {
+        snack.serveDisruptive({
+          closable: true,
+          content: hasNonPdfFile
+            ? 'Only pdf file is supported in this prototype'
+            : `${info.file.name} file upload failed.`,
+        });
+      } else if (status === 'removed') {
+        const resetData = async () => {
+          setFileList([]);
+          setData({});
+        };
+        resetData().catch(console.error);
+        setFileUploaded(false);
+        setFileUrl('');
+      }
+    },
+    onDrop(e) {
+      console.log('Dropped files', e?.dataTransfer.files);
+      e?.preventDefault();
+      const newFile = e?.dataTransfer.files[0];
+      if (newFile.name.endsWith('.pdf')) {
+        setHasNonPdfFile(false);
+        setNewFile(newFile);
+      } else {
+        setHasNonPdfFile(true);
+      }
+    },
+    onRemove(_file) {
+      setFile(defaultFileState);
       const resetData = async () => {
         setFileList([]);
         setData({});
       };
       resetData().catch(console.error);
-    }
-  }, [data]);
+      setFileUploaded(false);
+      setFileUrl('');
+    },
+    showUploadList: {
+      removeIconButtonType: 'button',
+      showRemoveIconButton: true,
+    },
+  };
 
   /**
    * Mock Menu overlays for the search, share, and job cart buttons.
@@ -665,6 +736,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
             ]
       }
       listType="ul"
+      onChange={(value) => searchRoles(value)}
       role="list"
     />
   );
@@ -831,14 +903,18 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
             width: 120,
           }}
           filterable
-          onClear={() => setMyLang('English')}
-          onOptionsChange={onLangSelectChange}
+          onClear={() => setMyLang(undefined)}
+          onOptionsChange={(options: SelectOption[]) =>
+            onLangSelectChange(options)
+          }
           options={languageOptions}
           shape={SelectShape.Pill}
           style={{ minWidth: 120, width: 120 }}
           textInputProps={{
-            placeholder: myLang,
+            clearButtonAriaLabel: 'Clear language',
+            placeholder: 'Language',
           }}
+          value={myLang?.value || defaultLang?.name}
         />
       </Nav>
       <Header
@@ -1488,7 +1564,12 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     name={'first'}
                                     label="First name"
                                     labelAlign="left"
-                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        validateTrigger: 'onSubmit',
+                                      },
+                                    ]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1503,7 +1584,12 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     name={'last'}
                                     label="Last name"
                                     labelAlign="left"
-                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        validateTrigger: 'onSubmit',
+                                      },
+                                    ]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1520,7 +1606,12 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     name={'email'}
                                     label="Email"
                                     labelAlign="left"
-                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        validateTrigger: 'onSubmit',
+                                      },
+                                    ]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1536,7 +1627,12 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                                     name={'phone'}
                                     label="Phone"
                                     labelAlign="left"
-                                    rules={[{ required: true, validateTrigger: 'onSubmit' }]}
+                                    rules={[
+                                      {
+                                        required: true,
+                                        validateTrigger: 'onSubmit',
+                                      },
+                                    ]}
                                     style={{ marginBottom: 8 }}
                                   >
                                     <TextInput
@@ -1593,7 +1689,7 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                               ? ButtonWidth.fitContent
                               : ButtonWidth.fill
                           }
-                          htmlType='submit'
+                          htmlType="submit"
                           onClick={() => {
                             if (currentQuestion === 'question four') {
                               form.submit();
@@ -1671,7 +1767,8 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                         >
                           <Dropzone
                             {...uploadProps}
-                            accept='.doc,.docx,.pdf,.txt'
+                            accept=".pdf"
+                            acceptedFileTypesText="(.pdf format only)"
                             fullWidth={!screens.lg}
                             size={
                               !screens.lg ? UploadSize.Medium : UploadSize.Small
@@ -2834,7 +2931,8 @@ function PCSLoggedOut(_props: PropsWithChildren<AppProps>) {
                 </p>
                 <Dropzone
                   {...uploadProps}
-                  accept='.doc,.docx,.pdf,.txt'
+                  accept=".pdf"
+                  acceptedFileTypesText="(.pdf format only)"
                   fullWidth={!isDesktop}
                   classNames={styles.uploadModalDropzone}
                   size={UploadSize.Medium}

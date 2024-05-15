@@ -2,64 +2,6 @@ import React from 'react';
 import type { NextPageProps } from '@/@types/global';
 import { ButtonVariant, IconName, LinkButtonVariant } from '@eightfold.ai/octuple';
 
-export const jobs = {
-  softwareengineer: 'Software Engineer',
-  productmanager: 'Product Manager',
-  sdet: 'SDET',
-  machinelearningengineer: 'Machine Learning Engineer',
-  director: 'Director',
-  leadengineer: 'Lead Engineer',
-  seniorengineer: 'Senior Engineer',
-  memberoftechnicalstaff: 'Member of Technical Staff',
-  principalengineer: 'Principal Engineer',
-  functionalconsultant: 'Functional Consultant',
-  uxdesigner: 'UX Designer',
-  dealdeskmanager: 'Deal Desk Manager',
-  technicalsupportengineer: 'Technical Support Engineer',
-  accountant: 'Accountant',
-  productdeliverymanager: 'Product Delivery Manager',
-};
-
-export const langs = {
-  en: 'English',
-  it: 'Italiano',
-  es: 'Español',
-  fr: 'Français',
-  pt: 'Português',
-  nb: 'Norsk',
-  de: 'Deutsch',
-  ja: '日本語',
-  ms: 'Bahasa melayu',
-  'zh-CN': '中文 (简体)',
-  'zh-TW': '中文 (繁體)',
-  ko: '한국어',
-  th: 'ภาษาไทย',
-  hr: 'Hrvatski',
-  uk: 'Yкраїнська',
-  nl: 'Nederlands',
-  pl: 'Polski',
-  el: 'Ελληνικά',
-  hu: 'Magyar',
-  cs: 'čeština',
-  tr: 'Türkçe',
-  ru: 'Pусский',
-  ht: 'Haitian',
-  he: 'עברית',
-  'pt-BR': 'Brazilian Português',
-  da: 'Dansk',
-  fi: 'Suomi',
-  sv: 'Svenska',
-};
-
-export const locations = {
-  current: 'Current location',
-  bengalaru: 'Bengalaru, Karnataka, India',
-  noida: 'Noida, Uttar Pradesh, India',
-  santa: 'Santa Clara, CA, United States',
-  london: 'London, England, United Kingdom',
-  hybrid: 'Hybrid',
-};
-
 export interface AppProps {
   searchParams?: NextPageProps['searchParams'];
 }

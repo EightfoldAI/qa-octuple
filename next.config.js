@@ -7,7 +7,7 @@ const nextConfig = {
   webpack: require('./webpack.config'),
   reactStrictMode: true,
   swcMinify: true,
-  pageExtensions: ['ts', 'tsx']
+  pageExtensions: ['ts', 'tsx'],
 };
 
 module.exports = nextConfig;

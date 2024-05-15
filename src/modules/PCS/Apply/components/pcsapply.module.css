@@ -1,5 +1,32 @@
+.dropdown {
+  min-width: 120px;
+}
+
+.dropdownWrapText button span {
+  white-space: normal;
+}
+
 .fieldSet {
   border: none;
+  margin-bottom: 40px;
+}
+
+.label span {
+  font-weight: 600;
+}
+
+.questions label {
+  height: auto !important;
+  margin-top: 16px !important;
+}
+
+.lastRow {
+  margin-bottom: 40px;
+}
+
+legend.legend {
+  border: none;
+  border-bottom: none;
 }
 
 .sectionMarginBottom {

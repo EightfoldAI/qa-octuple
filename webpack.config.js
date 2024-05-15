@@ -40,6 +40,16 @@ function webpack(config) {
 
   /** End Config SVGR */
 
+  /** Canvas and Encoding SSR for pdfjs-dist */
+  config.resolve = {
+    ...config.resolve,
+    alias: {
+      ...config.resolve.alias,
+      canvas: false,
+      encoding: false
+    }
+  };
+
   return config;
 }
 

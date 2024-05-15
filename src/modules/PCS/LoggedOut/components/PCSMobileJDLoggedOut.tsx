@@ -46,13 +46,13 @@ import { UploadModal } from '@/modules/Shared/components/UploadModal/UploadModal
 import {
   AppProps,
   Employee,
-  langs,
   NewsItem,
   PCSNavItem,
   PerksItem,
   Role,
   VideoItem,
 } from '@/packages/utils/mockdata.types';
+import { langs } from '@/packages/utils/langs';
 import {
   mockAvatarProps,
   sampleEmployeeList,

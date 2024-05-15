@@ -43,7 +43,8 @@ export const UploadModal: FC<UploadModalProps> = forwardRef(
             </h1>
             <Dropzone
               {...uploadProps}
-              accept='.doc,.docx,.pdf,.txt'
+              accept='.pdf'
+              acceptedFileTypesText='(.pdf format only)'
               fullWidth={!isDesktop}
               classNames={styles.uploadModalDropzone}
               size={UploadSize.Medium}
