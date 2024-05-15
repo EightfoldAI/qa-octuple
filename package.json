@@ -30,7 +30,7 @@
     "mongodb": "^6.4.0",
     "next": "14.1.0",
     "pdfjs": "^2.5.0",
-    "pdfjs-dist": "^3.7.107",
+    "pdfjs-dist": "^4.2.67",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-flip-toolkit": "7.0.13",
